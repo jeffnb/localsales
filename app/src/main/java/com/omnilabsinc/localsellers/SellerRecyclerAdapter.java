@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.omnilabsinc.localsellers.models.Seller;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,7 +33,13 @@ public class SellerRecyclerAdapter extends RecyclerView.Adapter<SellerViewHolder
     public void onBindViewHolder(SellerViewHolder holder, int position) {
         Seller seller = sellers.get(position);
         holder.sellerName.setText(seller.getName());
-        holder.itemCount.setText(String.valueOf(seller.getNumberOfItems())+" items");
+        holder.itemCount.setText(String.valueOf(seller.getNumberOfItems()) + " items");
+
+
+//        Picasso.with(context).load(feedItem.getThumbnail())
+//                .error(R.drawable.placeholder)
+//                .placeholder(R.drawable.placeholder)
+//                .into(holder.firstItemPicture);
     }
 
     @Override
