@@ -10,6 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.omnilabsinc.localsellers.models.MetaResponse;
+import com.omnilabsinc.localsellers.models.Seller;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -21,6 +25,7 @@ import retrofit.http.GET;
 public class MainActivity extends Activity implements Callback<MetaResponse>{
 
     private RecyclerView mRecyclerView;
+    private SellerRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,41 +42,19 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
 
         Close5Service close5Service = restAdapter.create(Close5Service.class);
 
-
-       //MetaResponse mr = close5Service.getList();
         close5Service.getMetaCallback(this);
 
-        String foo = "bar";
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void success(MetaResponse metaResponse, Response response) {
-        MetaResponse mr = metaResponse;
+        List<Seller> sellers = metaResponse.getRows();
 
-        String foo = "bar";
+        if(sellers.size() > 0) {
+            this.adapter = new SellerRecyclerAdapter(this, sellers);
+            mRecyclerView.setAdapter(adapter);
+        }
+
     }
 
     @Override
