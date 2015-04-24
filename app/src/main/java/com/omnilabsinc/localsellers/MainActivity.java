@@ -26,6 +26,7 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
 
     private RecyclerView mRecyclerView;
     private SellerRecyclerAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +34,16 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
         setContentView(R.layout.activity_main);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        //Get list test for serialization
+        //Get list
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("https://api.close5.com")
                 .build();
-
         Close5Service close5Service = restAdapter.create(Close5Service.class);
-
-        close5Service.getMetaCallback(this);
+        close5Service.getMetaCallback(5, 0, this);
 
     }
 

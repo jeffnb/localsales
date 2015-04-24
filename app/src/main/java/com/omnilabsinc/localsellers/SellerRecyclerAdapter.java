@@ -1,13 +1,13 @@
 package com.omnilabsinc.localsellers;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.omnilabsinc.localsellers.models.Seller;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,14 +32,15 @@ public class SellerRecyclerAdapter extends RecyclerView.Adapter<SellerViewHolder
     @Override
     public void onBindViewHolder(SellerViewHolder holder, int position) {
         Seller seller = sellers.get(position);
-        holder.sellerName.setText(seller.getName());
-        holder.itemCount.setText(String.valueOf(seller.getNumberOfItems()) + " items");
+        holder.getSellerName().setText(seller.getName());
+        holder.getItemCount().setText(String.valueOf(seller.getNumberOfItems()) + " items");
 
+        RecyclerView recyclerView = holder.getRecyclerView();
+        LinearLayoutManager manager = new LinearLayoutManager(context);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(new ItemAdapter(seller.getItems(), context));
 
-//        Picasso.with(context).load(feedItem.getThumbnail())
-//                .error(R.drawable.placeholder)
-//                .placeholder(R.drawable.placeholder)
-//                .into(holder.firstItemPicture);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.omnilabsinc.localsellers;
 
+import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,14 +13,26 @@ import android.widget.TextView;
  */
 public class SellerViewHolder extends RecyclerView.ViewHolder {
 
-    protected TextView sellerName;
-    protected TextView itemCount;
-    protected ImageView firstItemPicture;
+    private TextView sellerName;
+    private TextView itemCount;
+    private RecyclerView recyclerView;
 
     public SellerViewHolder(View view){
         super(view);
         sellerName = (TextView)view.findViewById(R.id.seller_name);
         itemCount = (TextView)view.findViewById(R.id.item_count);
-        firstItemPicture = (ImageView)view.findViewById(R.id.fistItemImage);
+        recyclerView = (RecyclerView)view.findViewById(R.id.image_view);
+    }
+
+    public TextView getSellerName() {
+        return sellerName;
+    }
+
+    public TextView getItemCount() {
+        return itemCount;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
     }
 }
