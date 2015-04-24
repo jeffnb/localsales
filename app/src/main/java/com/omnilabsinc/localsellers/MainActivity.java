@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("https://api.close5.com")
                 .build();
         Close5Service close5Service = restAdapter.create(Close5Service.class);
-        close5Service.getMetaCallback(5, 0, this);
+        close5Service.getMetaCallback(10, 0, this);
 
     }
 

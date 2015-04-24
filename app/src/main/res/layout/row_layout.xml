@@ -21,11 +21,12 @@
         android:layout_margin="8dp"
         android:maxLines="3" />
 
-    <view
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        class="android.support.v7.widget.RecyclerView"
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/image_view"
+        android:layout_below="@id/seller_name"
+        android:minHeight="@dimen/image_size"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>
