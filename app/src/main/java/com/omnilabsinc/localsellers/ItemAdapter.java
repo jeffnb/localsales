@@ -52,7 +52,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
         Picasso.with(context).load(imageUrl)
                 .error(R.drawable.placeholder)
-                .placeholder(R.drawable.placeholder)
                 .into(imageView);
     }
 
