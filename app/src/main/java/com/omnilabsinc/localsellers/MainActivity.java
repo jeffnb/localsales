@@ -1,32 +1,29 @@
 package com.omnilabsinc.localsellers;
 
 import android.app.Activity;
-import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 
 import com.omnilabsinc.localsellers.models.MetaResponse;
 import com.omnilabsinc.localsellers.models.Seller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.http.GET;
 
 
 public class MainActivity extends Activity implements Callback<MetaResponse>{
-
+    private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private SellerRecyclerAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
+    private static final int DATA_RETURN_LIMIT = 20;
+    private static final int LOAD_MORE_THRESHOLD = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +39,16 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
         //Get list
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("https://api.close5.com")
                 .build();
-        Close5Service close5Service = restAdapter.create(Close5Service.class);
-        close5Service.getMetaCallback(10, 0, this);
+        final Close5Service close5Service = restAdapter.create(Close5Service.class);
+        close5Service.getMetaCallback(DATA_RETURN_LIMIT, 0, this);
+
+        mRecyclerView.setOnScrollListener(
+                new EndlessSellerScrollListener(layoutManager, LOAD_MORE_THRESHOLD) {
+            @Override
+            public void onLoadMore(int skipStart) {
+                close5Service.getMetaCallback(DATA_RETURN_LIMIT, skipStart, MainActivity.this);
+            }
+        });
 
     }
 
@@ -60,8 +65,6 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
 
     @Override
     public void failure(RetrofitError error) {
-        RetrofitError err = error;
-
-        String foo = "bar";
+        Log.e(TAG, "Error loading data" + error.toString());
     }
 }
