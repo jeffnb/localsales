@@ -1,6 +1,9 @@
 package com.omnilabsinc.localsellers;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,7 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
     private LinearLayoutManager layoutManager;
     private static final int DATA_RETURN_LIMIT = 20;
     private static final int LOAD_MORE_THRESHOLD = 10;
+    private Location lastKnownLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +40,24 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
+        //Get a quick fix for location
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
         //Get list
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("https://api.close5.com")
                 .build();
         final Close5Service close5Service = restAdapter.create(Close5Service.class);
-        close5Service.getMetaCallback(DATA_RETURN_LIMIT, 0, this);
+        close5Service.getMetaCallback(DATA_RETURN_LIMIT, 0, lastKnownLocation.getLatitude(),
+                lastKnownLocation.getLongitude(), this);
 
         mRecyclerView.setOnScrollListener(
                 new EndlessSellerScrollListener(layoutManager, LOAD_MORE_THRESHOLD) {
             @Override
             public void onLoadMore(int skipStart) {
-                close5Service.getMetaCallback(DATA_RETURN_LIMIT, skipStart, MainActivity.this);
+                close5Service.getMetaCallback(DATA_RETURN_LIMIT, skipStart,
+                        lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                        MainActivity.this);
             }
         });
 

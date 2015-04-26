@@ -12,7 +12,18 @@ import retrofit.http.Query;
  */
 public interface Close5Service {
 
-    @GET("/users/items/grouped?maxDistance=50&lat=37.320352&lon=-121.9045411")
+    /**
+     * This calls out to get the list of sellers and items.
+     * NOTE: The multiple parameters were chosen instead of the map to keep the parameters clear
+     * and localized instead of breaking the encapsulation
+     * @param limit
+     * @param skip
+     * @param lat
+     * @param lon
+     * @param cmr
+     */
+    @GET("/users/items/grouped?maxDistance=50")
     public void getMetaCallback(@Query("limit") int limit, @Query("skip") int skip,
+                                @Query("lat") double lat, @Query("lon") double lon,
                                 Callback<MetaResponse> cmr);
 }
