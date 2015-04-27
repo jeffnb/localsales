@@ -23,6 +23,12 @@ public class SellerRecyclerAdapter extends RecyclerView.Adapter<SellerViewHolder
         this.context = context;
     }
 
+    public void addSellers(List<Seller> newSellers){
+        int lastItem = sellers.size();
+        sellers.addAll(newSellers);
+        this.notifyItemRangeInserted(lastItem, newSellers.size());
+    }
+
     @Override
     public SellerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_layout, null);

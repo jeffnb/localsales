@@ -68,8 +68,14 @@ public class MainActivity extends Activity implements Callback<MetaResponse>{
         List<Seller> sellers = metaResponse.getRows();
 
         if(sellers.size() > 0) {
-            this.adapter = new SellerRecyclerAdapter(this, sellers);
-            mRecyclerView.setAdapter(adapter);
+
+            if(this.adapter == null) {
+                this.adapter = new SellerRecyclerAdapter(this, sellers);
+                mRecyclerView.setAdapter(adapter);
+            }
+            else{
+                adapter.addSellers(sellers);
+            }
         }
 
     }
